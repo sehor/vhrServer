@@ -4,6 +4,9 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -49,5 +52,12 @@ public class RoleController {
     @GetMapping("/getDefault")
     Role getDefaultRole(){
         return service.getDefaultRole();
+    }
+    
+    
+    @PostMapping("/getMachtRoles")
+    List<Role> getMachtRoles(String urlStr){
+    	System.out.println(urlStr);
+    	return service.findRolesViaPathUrl(urlStr);
     }
 }

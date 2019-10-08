@@ -315,7 +315,7 @@ public class AutoJOPO {
             file.createNewFile();
         }
 
-        try (FileWriter writer = new FileWriter(file, StandardCharsets.UTF_8)) {
+        try (FileWriter writer = new FileWriter(file)) {
             writer.write(fileString);
         }
     }

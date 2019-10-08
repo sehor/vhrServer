@@ -19,7 +19,12 @@ import java.util.List;
 @ApiModel(value = "", description = "")
 public class HRSecurityDetails implements UserDetails, Serializable {
 
-    @ApiModelProperty(value = "")
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	@ApiModelProperty(value = "")
     private HR hr;
 
     @ApiModelProperty(value = "")

@@ -11,4 +11,8 @@ void deleteRole(Integer id);
 List<Role> getByHrId(Integer hrId);
 List<Role> findAllRoles();
 Role getDefaultRole();
+
+List<Role> findRolesViaMenuId(Integer menuId);
+
+List<Role> findRolesViaPathUrl(String url);
 }

@@ -7,6 +7,9 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.util.AntPathMatcher;
+
+import javassist.expr.NewArray;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +19,11 @@ public class MenuServiceImpl implements MenuService {
     @Autowired
     MenuRepository repository;
 
+	
+	  @Autowired AntPathMatcher antPathMatcher;
+	 
+    
+    ///private AntPathMatcher antPathMatcher=new AntPathMatcher();
 
     @Override
     @CachePut(value = "menuCache",key = "#result.id")
@@ -55,6 +63,21 @@ public class MenuServiceImpl implements MenuService {
     public List<Menu> findAllMenus() {
         return repository.findAllMenus();
     }
+
+    
+	@Override
+	public List<Menu> findMenusViaUrl(String url) {
+		// TODO Auto-generated method stub
+		List<Menu> menus=new ArrayList<>();
+		
+		for(Menu menu:repository.findAll()) {
+			if(antPathMatcher.match(menu.getPattern(), url)) {
+				menus.add(menu);
+			}
+			
+		}
+		return menus;
+	}
 
 
 

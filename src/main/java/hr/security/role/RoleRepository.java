@@ -10,4 +10,7 @@ public interface RoleRepository extends JpaRepository<Role,Integer>,RoleDataHelp
 
     @Query("FROM Role as r,HR_Role as h_r WHERE h_r.hrId=:hrId AND h_r.roleId=r.id")
     List<Role> getRolesViaHrId(Integer hrId);
+    
+    @Query("FROM Role as r,Menu_Role as m_r WHERE m_r.menuId=:menuId AND m_r.roleId=r.id")
+    List<Role> findRolesByMenuId(Integer menuId); 
 }

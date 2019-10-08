@@ -4,6 +4,7 @@ import hr.security.hrSecurityDetails.HRSecurityDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.config.annotation.ObjectPostProcessor;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -11,9 +12,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
 import org.springframework.security.web.access.intercept.FilterSecurityInterceptor;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+import org.springframework.util.AntPathMatcher;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,9 +25,22 @@ import java.io.IOException;
 
 @Configuration
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
+	
+	
+	@Bean
+	AntPathMatcher antPathMatcher() {
+		
+		return new AntPathMatcher();
+	}
+	
 
     @Autowired
     HRSecurityDetailsServiceImpl hrSecurityDetailsServiceImpl;
+    
+    @Autowired
+     FilterInvocationSecurityMetadataSource customFilterInvocationSecurityMetaDataSource;
+    @Autowired
+    AccessDecisionManager customAccessDecisionManager;
 
     @Bean
     PasswordEncoder passwordEncoder() {
@@ -43,7 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-/*                .withObjectPostProcessor(
+                .withObjectPostProcessor(
                         new ObjectPostProcessor<FilterSecurityInterceptor>() {
                             @Override
                             public <O extends FilterSecurityInterceptor> O postProcess(O o) {
@@ -52,7 +68,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                                 return o;
                             }
                         }
-                )*/
+                )
                 .and()
                 .formLogin()
                 .loginProcessingUrl("/login")
@@ -64,6 +80,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         httpServletResponse.sendRedirect("/security/me");
                     }
                 })
+                .and()
+                .rememberMe()
                 .and()
                 .logout()
                 .logoutUrl("/logout")

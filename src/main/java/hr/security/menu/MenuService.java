@@ -9,4 +9,6 @@ Menu updateMenu(Menu menu);
 void deleteMenu(Menu menu);
 void deleteMenu(Integer id);
 List<Menu> findAllMenus();
+
+List<Menu> findMenusViaUrl(String url);
 }
